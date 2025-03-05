@@ -1,0 +1,722 @@
+
+%re% declare our document type
+\documentclass[12pt]{article}
+
+%%%%%%%% PACKAGES NEEDED FOR THIS DOCUMENT
+
+% allow us to put pictures in the document
+\usepackage{graphicx}
+% this line lets us use larger fonts
+\usepackage{extsizes}
+% this allows us to create "slides" in the document
+\usepackage[many]{tcolorbox}
+% this line lets us caption images inside the "slides"
+% this is neccesary since the slide doesn't allow the use of
+% \figure{} inside
+%\usepackage{caption}
+% allows use of courier font
+\usepackage{courier}
+% make the table of contents links like people are used to
+% the hidelinks parts hides link outlines
+\usepackage[hidelinks]{hyperref}
+% resize the margins
+\usepackage[margin=1in]{geometry}
+% use utf8 encoding
+\usepackage[utf8]{inputenc}
+% one of the other packages complained until I put this here
+\usepackage[english]{babel}
+% allow citations
+\usepackage{cite}
+% code listings
+\usepackage{listings}
+% fix single quote in listings
+\usepackage{textcomp}
+
+%%%%%%%%%%% CUSTOM ENVIRONMENT SETUP
+
+% declare a typesetting environment for code/emphasis
+\newcommand{\code}[1]{\texttt{\bfseries#1}}
+\newenvironment{codeblock}{\bfseries\texttt\bgroup}{\egroup\par}
+% better declaration of font environment
+%\DeclareTextFontCommand{\codetext}[1]{\code{#1}}
+% declare a large font environment for use in the "slides"
+\newcommand{\instruction}[1]{\Large{#1}}
+% font environment again
+%\DeclareTextFontCommand{\instruction}{\instructionfont}
+\newenvironment{instructionblock}{\Large\bgroup}{\egroup}
+% declare a "slide" text box for use in the document
+% the slide is a numbered \section{}
+\newtcolorbox[auto counter]{slide}[3][]{%
+	colback=brown!5!white,colframe=brown!80!gray,height=5in,
+	title={\addcontentsline{toc}{section}{\thetcbcounter ~~ #2}\bf\Large\thetcbcounter ~ #2\hfill #3 \label{slide \thetcbcounter}\setcounter{section}{\thetcbcounter}}}
+% declare a "subslide" text box for use in the document
+% the subslide is a numbered \subsection{}
+\newtcolorbox[auto counter,number within=section]{subslide}[3][]{%
+	colback=brown!5!white,colframe=brown!80!gray,height=3.72in,
+	title={\addcontentsline{toc}{subsection}{\thetcbcounter ~~ #2}\bf\Large\thetcbcounter ~ #2\hfill #3 \label{slide \thetcbcounter}}}
+\renewcommand{\labelitemii}{$\circ$}
+\lstset{basicstyle=\ttfamily,keywordstyle=\bfseries\color{blue!80!black},identifierstyle=\bfseries,stringstyle=\color{red},showstringspaces=false,commentstyle=\itshape\color{green!40!black},upquote=true}
+
+% My Environments (keep these)
+\usepackage{titling}%for changelog
+\newcommand{\ben}{\begin{enumerate}}
+	\newcommand{\een}{\end{enumerate}}
+\newcommand{\bi}{\begin{itemize}}
+	\newcommand{\ei}{\end{itemize}}
+\usepackage{hyperref}
+%%%%%%%%% SET UP OUR TITLE PAGE
+
+\begin{document}
+\title{ Security Onion \\ \large Free and Open Security Platform where you peel back your defenses layer by layer and make your adversaries cry}
+\author{Garrett Pearsall and Jeffrey Zhang}
+\date{\today \\ \hyperref[changelog]{Version 1.0} }
+\renewcommand{\abstractname}{Summary}
+\begin{titlepage}
+\maketitle
+\pagenumbering{gobble}
+\begin{center}
+\includegraphics[scale=.5]{UofI}
+
+\vskip 40pt
+
+\end{center}
+
+\begin{abstract}
+This tutorial focuses on learning about the Security Onion Platform, a free and open framework/platform for threat hunting, network security monitoring, and log management. We will demonstrate a few tasks that the Security Onion Platform is capable of performing.
+%\center{\textbf{Prerequisites}}
+
+%Basic familiarity with the bash command line.
+\end{abstract}
+
+
+\vfill
+\begin{center}
+This work is licensed under a \href{https://creativecommons.org/licenses/by-nc-nd/2.0/}{Creative Commons Attribution-NonCommercial 4.0 International License}.
+\vskip 10pt
+\includegraphics[scale=.5]{cc}
+\end{center}
+
+\end{titlepage}
+
+%%%%%%%%%% TABLE OF CONTENTS
+
+\pagebreak
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%    BEGINNING OF ACTUAL DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagebreak
+\pagenumbering{arabic}
+\setcounter{section}{1}
+\pagebreak
+% use begin{slide} and decimal numbers for slides
+\begin{slide}{Virtual Machine Passwords}{\hyperref[slide 2]{\textgreater}}
+\begin{itemize}
+    \item \texttt{Windows 11 VM: win11\_local\_admin/password}
+    \item \texttt{Ubuntu VM: user/password}
+    \item \texttt{Security Onion VM: admin/password}
+    \item \texttt{Security Onion SOCGUI: admin@securityonion.com/password}
+    \item \texttt{LAMP: root/Password1}
+\end{itemize}
+
+\end{slide}
+
+
+\pagebreak
+
+
+\pagebreak
+% use begin{slide} and decimal numbers for slides
+\begin{slide}{Introduction}{\hyperref[slide 2]{\textgreater}}
+\vskip 20 pt
+\begin{instructionblock}
+What are the benefits of automated log collection versus manual log collection? How would the benefits of automated log collection assist in the overall defense architecture of the network(s)?
+\end{instructionblock}
+\end{slide}
+
+\vfill
+
+It is important for all of us to understand why is it important to have log collection in general. Automating it via tools such as Security Onion can help assist System Administrators in automatically keeping a watchdog on the network, like an extra pair of eyes. Most applications leave some sort of logs for security purposes, to keep logs of our information up to date. Manual Log Checking is of course, viable, however it isn't scalable and it is inconvenient when compared to automated systems like Security Onion to assist. 
+
+
+
+\pagebreak
+\begin{slide}{Major Stats for Security Onion}{\hyperref[slide 1]{\textless}\hyperref[slide 3]{\textgreater}}
+\vskip 10 pt
+\begin{instructionblock}
+\begin{enumerate}
+	\item 2009 - Security Onion was Established. \cite{yahoo}
+	\item 2014 - Security Onion LLC gets established.
+	\item 2021 - Security Onion achieves 2 million downloads.
+\end{enumerate}
+
+This lab will be using Security Onion version v2.3. (v2.4 is the latest version, released on August 29, 2024.)
+\end{instructionblock}
+\end{slide}
+\vfill
+
+\begin{enumerate}
+	\item Security Onion Solutions, LLC is the creator and maintainer of Security Onion, a free and open platform for threat hunting, network security monitoring, and log management. Security Onion includes best-of-breed free and open tools including Suricata, Zeek, the Elastic Stack and many others. \cite{yahoo}
+	
+\end{enumerate}
+
+
+%\noindent\textbf{1. }\href{https://www.nytimes.com/2016/12/14/technology/yahoo-hack.html?_r=1}{}\newline
+
+%\noindent\textbf{2. }\href{http://thehackernews.com/2016/06/github-password-hack.html}{}
+
+
+\pagebreak
+% use begin{slide} and decimal numbers for slides
+
+
+\pagebreak
+% use begin{slide} and decimal numbers for slides
+\begin{slide}{More Trivia for Security Onion}{\hyperref[slide 2]{\textless}\hyperref[slide 4]{\textgreater}}
+	\vskip 20 pt
+	\begin{instructionblock}
+		\ben
+			\item 	For network security, Security Onion is a FRAMEWORK that offers signature based detection via Suricata, rich protocol metadata, and file extraction.
+			\item 	It's Highly Scalable.
+			\item   Security Onion and it's tools (i.e. Wazuh) are open source. The source code is on GitHub for review by those seeking to understand how it works behind the scenes.
+            \item   If one is familiar with the "Stellar Cyber" platform, they are both relatively similar in utility.
+	\een
+	\end{instructionblock}
+\end{slide}
+
+\vfill 
+
+
+Security Onion is a free and open platform built by defenders for defenders. It includes network visibility, host visibility, intrusion detection honeypots, log management, and case management.
+For network visibility, we offer signature based detection via Suricata, rich protocol metadata and file extraction using your choice of either Zeek or Suricata, full packet capture via Stenographer, and file analysis via Strelka. For host visibility, we offer the Elastic Agent which provides data collection, live queries via osquery, and centralized management using Elastic Fleet. Intrusion detection honeypots based on OpenCanary can be added to your deployment for even more enterprise visibility. All of these logs flow into the Elastic stack and we've built our own user interfaces for alerting, hunting, dashboards, case management, and grid management.
+Security Onion has been downloaded over 2 million times and is being used by security teams around the world to monitor and defend their enterprises. Our easy-to-use Setup wizard allows you to build a distributed grid for your enterprise in minutes!
+
+
+
+\pagebreak
+% \begin{slide}{Windows Passwords (LM and NTLM)}{\hyperref[slide 3]{\textless}\hyperref[slide 5]{\textgreater}}
+%
+%	\vskip 10pt
+%	\begin{instructionblock}
+%		LM (Lan Manager):
+%		\begin{enumerate}
+%			\item Developed by IBM and Microsoft
+%			\item Uses server message block protocol
+%		\end{enumerate}
+%	To overcome some of the disadvantages of LM a new method called NTLM was introduced. Though it is better than LM, it is still weak and can be brute-forced easily.
+%	
+%	\end{instructionblock}
+%\end{slide}
+%\vfill
+%\textbf{LM hash algorithm}:
+%\begin{enumerate}
+%	\item 	Weak method of hashing
+%	\item   Can crack hashes in seconds using rainbow tables
+%\end{enumerate}
+%
+%\textbf{Trouble with LM password Hashes}:
+%\begin{itemize}
+%	\item Passwords are truncated at 14 characters. 
+%	\item Passwords are converted to all uppercase. 
+%	\item Passwords of fewer than 14 characters are null-padded to 14 characters. 
+%	\item The 14-character password is broken into two seven-character passwords that are hashed separately. 
+%\end{itemize}
+%
+%
+%
+%NTLM hashes are more difficult to crack than LM. Length and complexity of password matters. If the hashing function is complex it takes decades or even life time to hack and NTLMv2 uses RC4. NTLM is not salted and the types of encryption can be dictated by group policy and active directory settings. 
+%There are two versions of NTLM: 
+%\begin{itemize}
+%	\item LM and NTLMv1 use DES 
+%	\item NTLMv2 uses MD4/MD5
+%\end{itemize}
+%\cite{book}
+%
+%Jeremi Gosney released a research paper called Exacerbating Global Warming at the Oslo Password Hacking Conference showing that any NTLM hash can be cracked in under 6 hours. \cite{oslo}
+%
+%
+%
+%\pagebreak
+\begin{slide}{Activity 1: Discussion}{\hyperref[slide 4]{\textless}\hyperref[slide 6]{\textgreater}}
+	\vskip 10pt
+	\begin{instructionblock}
+		
+		List 3-5 key benefits of using Network Monitoring in a corporate environment.
+		
+		\bigskip
+		\bigskip
+		
+		How can Security Onion be customized to fit the specific needs of an organization’s security posture?
+
+        \bigskip
+        \bigskip
+
+        In what ways does Network Monitoring facilitate incident detection and response? Can it be effectively used for real-time monitoring?
+
+	\end{instructionblock}
+\end{slide}
+
+
+Security Onion is a robust, open-source platform designed for threat hunting, network security monitoring, and log management. It integrates tools like Wazuh, Suricata, Zeek, and Kibana, thus providing a comprehensive solution for detecting and responding to cybersecurity threats.
+
+\pagebreak
+\begin{slide}{Briefing: Wazuh}{\hyperref[slide 5]{\textless}\hyperref[slide 7]{\textgreater}}
+	\vskip 10pt
+	\begin{instructionblock}
+		What is Wazuh, and how is it used within Security Onion?
+		\begin{enumerate}
+			\item Wazuh monitors endpoints for suspicious activities, unauthorized changes, and vulnerabilities.
+			\item It collects, parses, and analyzes logs from various sources to identify potential security incidents.
+			\item Leverages signature-based and anomaly-based detection methods to uncover threats.
+		\end{enumerate}
+	\end{instructionblock}
+\end{slide}
+%\vfill
+
+
+Wazuh is a powerful open-source platform that complements Security Onion by extending its capabilities to endpoint detection, log analysis, and compliance monitoring. Security Onion focuses on network security monitoring, providing tools like Suricata and Zeek for traffic analysis. Wazuh enhances this setup by adding endpoint-level visibility, ensuring that organizations have a holistic view of their infrastructure. By integrating these two platforms, analysts can monitor both network and endpoint activity in a unified dashboard, such as Kibana, enabling seamless threat detection and response.
+
+\bigskip
+\bigskip
+
+One of the key benefits of using Wazuh with Security Onion is the ability to correlate data from network traffic and endpoint logs. For instance, while Security Onion might identify suspicious network traffic patterns, Wazuh can analyze logs from the affected endpoints to pinpoint the root cause, such as unauthorized file modifications or anomalous user behavior. This integrated approach helps security teams detect and respond to multi-vector threats more effectively.
+
+\bigskip
+\bigskip
+
+In addition to threat detection, Wazuh aids in compliance monitoring by auditing endpoint configurations and ensuring adherence to regulatory standards like PCI DSS, HIPAA, and GDPR. Security Onion, on the other hand, focuses on network-level compliance, such as monitoring for data exfiltration. Together, they provide a comprehensive compliance solution that spans both network and endpoint levels.
+
+\bigskip
+\bigskip
+
+Finally, the integration between Wazuh and Security Onion enhances incident response. When Security Onion generates an alert for potential malicious activity, Wazuh provides detailed endpoint context, such as system logs or process activities, allowing analysts to investigate thoroughly. Wazuh can also automate response actions, like isolating compromised systems, which accelerates containment efforts. This synergy between Wazuh and Security Onion makes them a powerful combination for organizations aiming to strengthen their cybersecurity posture.
+
+\een
+
+\pagebreak
+\begin{slide}{Task 1: Catching Events Within the "Alerts" Tab}{\hyperref[slide 6]{\textless}\hyperref[slide 8]{\textgreater}}
+	\begin{instructionblock}
+		Open the Security Onion WebGUI
+		\begin{itemize}
+			\item Navigate to the "Windows Client" VM
+			\item Open Chrome, and input the URL 192.168.1.100
+			\item Navigate to alerts on the left sidebar, and then check the previous logs that have already been captured.
+            \item log off the current machine and log back in. Navigate back to the WebGUI, and there should be a new windows client event catching the logon and logout events. Click Drilldown and find the specific event.
+		\ei
+	\end{instructionblock}
+\end{slide}
+\vfill
+
+Wazuh should've captured this new event while it was running. As mentioned in the previous page, it runs within the framework of Security Onion to catch new events under the network that Security Onion was set up in.
+
+
+
+\pagebreak
+
+\begin{slide}{OSSEC Method (Linux)}{\hyperref[slide 7]{\textless}\hyperref[slide 9]{\textgreater}}
+		\vskip 10pt
+	\begin{instructionblock}
+		\begin{itemize}
+			\item Host-Based Intrusion Detection
+			\begin{itemize}
+				\item It identifies suspicious activities on individual hosts, such as unauthorized file modifications or privilege escalation.
+			\end{itemize}
+			\item Log Analysis
+			\begin{itemize}
+				\item Collects and parses logs from Linux services like SSH, Apache, and systemd to detect potential security threats.
+			\end{itemize}
+            \item It's basically Wazuh but for Linux
+		\end{itemize}
+	\end{instructionblock}
+\end{slide}
+
+
+\vfill
+\bi
+\item OSSEC and Wazuh are both open-source security platforms designed for intrusion detection and log management, but they differ in scope and functionality. OSSEC is primarily a host-based intrusion detection system (HIDS) focused on monitoring file integrity, analyzing logs, and detecting rootkits. It provides a lightweight solution for monitoring Linux, Windows, and macOS systems and has a strong emphasis on simplicity and performance. However, its feature set is relatively basic, offering limited support for modern use cases such as advanced threat detection, endpoint response, or compliance reporting. 
+\bigskip
+\item Wazuh, on the other hand, is a fork of OSSEC that has evolved into a more comprehensive security platform. It expands on OSSEC’s capabilities by integrating modern features such as vulnerability detection, compliance auditing, and enhanced endpoint detection and response (EDR). Wazuh also provides a more user-friendly interface and integrates seamlessly with tools like Elasticsearch and Kibana for advanced visualization and analytics. Additionally, Wazuh offers improved scalability and central management, making it better suited for large, complex environments. For convenience we will use OSSEC to monitor Linux, and Wazuh to monitor Windows for the remainder of this tutorial.
+\ei
+
+\pagebreak
+
+\begin{slide}{Activity 2: Triggering an event from the Ubuntu Machine}{\hyperref[slide 8]{\textless}\hyperref[slide 10]{\textgreater}}
+	\begin{instructionblock}
+	%	\textbf{SAM file}:
+    \bi
+				\item Log onto the Ubuntu Machine.
+			    \item Fail to log onto the "bobbob" user account at least 3 times.
+				\item Tab back into the Security Onion WebGUI and look for a new OSSEC Alert Type regarding the failed logons, then click drilldown on that specific alert to see the details of the incident.
+	\ei			
+	\end{instructionblock}
+\end{slide}
+\vfill
+\bi
+
+\item The new triggered alerts should add onto the number of existing alerts due to our testing earlier.
+
+\item The name of the alert should be pretty obvious.
+
+%Once you have the file, using \texttt{bkhive} we can extract the boot key in kali
+%~ bkhive /mnt/ntfs/windows/system32/config/SYSTEM/tmp/bootkey
+
+\ei
+
+\pagebreak
+\begin{slide}{Security Onion Downloads}{\hyperref[slide 10]{\textless}\hyperref[slide 12]{\textgreater}}
+	\begin{instructionblock}
+		\bi 
+			\item Five main configuration types for Security Onion. These are dependent on what you want to get our of security onion on various sizes of networks.
+			\item Import - This one is for deep packet inspection where you provide the pcap files and you can use the security onion interface to delve and find the alerts in the file.
+            \item Eval - Is for smaller classroom examples to help learn and understand the security onion system.
+            \item Standalone - Is a single node setup for production. Mainly for smaller systems.
+            \item Distributed - Is a multi-node system for larger networks with lots of network traffic.
+		\ei 
+		
+	\end{instructionblock}
+\end{slide}
+\vfill
+
+\item In this instance we are using the Eval configuration. This will be helpful because it is a single node system that is used for examples and do not have the large system requirements that other systems need.
+
+\pagebreak
+\begin{slide}{Kibana}{\hyperref[slide 9]{\textless}\hyperref[slide 11]{\textgreater}}
+	\begin{instructionblock}\
+		\bi
+			\item Kibana is a front-end for another look at all of the data gathered by security onion.
+			\item It is very similar to the SOC-GUI but it has some major differences.
+			\item It is more focused on the where and when the incident happened rather that looking doing full packet inspection.
+		\ei
+	\end{instructionblock}
+\end{slide}
+
+\vfill
+
+\item Kibana is within the elastic application and reads the data stored by Elasticsearch. It is a visualization tool that we can create graphs of the data to find more simplified views of our alerts with options like filtering that only takes data from a certain data set.
+
+\pagebreak
+\begin{slide}{Grafana}{\hyperref[slide 10]{\textless}\hyperref[slide 12]{\textgreater}}
+	\begin{instructionblock}
+		\bi 
+			\item Is an open source data visualization software that looks at the network and the traffic data that is passing through.
+			\item This can show things like network bandwidth usage, sensor activity, and system health with real time data.
+            \item You can also set up alerts so if something is detected that is not usual activity you can set it up so an alert will pop up in security onion stating what went wrong.
+		\ei 
+		
+	\end{instructionblock}
+\end{slide}
+\vfill
+
+\item This is really helpful on a larger distributed network setup. With a distributed network it might be too much strain on a one node system and you can implement and monitor each node with this software to see that each node is within a normal work load for the system. 
+
+\pagebreak
+\begin{slide}{CyberChef}{\hyperref[slide 11]{\textless}\hyperref[slide 13]{\textgreater}}
+	\begin{instructionblock}
+            \bi
+			\item This is a web based tool that you can use to decode, analyze, and manipulate different types of data.
+            \item If you have a packet that you want to decode into plain text you can input the data and then add different limiters so that when you decode it will reduce it to plain text.
+            \item You can follow along or just watch how easy you can manipulate data within this tool. 
+	        \ei
+		
+		
+		
+	\end{instructionblock}
+\end{slide}
+\vfill
+This can be really helpful for when you want to do some deep packet inspection and instead of looking at large blocks of data you can reduce it to more readable and useable data.
+
+
+\pagebreak
+% \begin{slide}{Challenge 1: Offline Password Attack}{\hyperref[slide 12]{\textless}\hyperref[slide 14]{\textgreater}}
+%	\begin{instructionblock}
+%		Using John the Ripper and the provided wordlists (located in the \texttt{\$wordlists} folder relative to the saved hashdump) attempt to crack the passwords included in this file
+%		\bi
+%			\item When you are able to crack a password, write down what you were able to crack and with which settings
+%			\item Try to determine why you were able to crack each one
+%			\item Were there any passwords you were unable to crack? Do you think you could given more time?
+%		\ei
+%	\end{instructionblock}
+%\end{slide}
+%The \code{rockyou.txt} wordlist is an actual password file leaked from the RockYou website. This is one of the better wordlists available today. The other wordlists include the Cain and Abel wordlist, an english dictionary, and the openhull all.lst which contains wordlist localizations in several languages and character sets. All in all there are over 20 million words/passwords between these four files alone.
+%\vfill
+%Duration: 10 minutes
+
+%\pagebreak
+\begin{slide}{Playbook}{\hyperref[slide 13]{\textless}\hyperref[slide 15]{\textgreater}}
+	\begin{instructionblock}
+        \bi
+		\item This is a web based database for storing different "plays" related to alerts that come up in the SOC-GUI.
+        \item This provides your personnel with what is going on and what to do in certain scenarios where an alert came up and they do not know where to start.
+        \item We can lookup and find the pre-configured plays that come with security onion while also having the option to create new plays and edit previously made plays if needed.
+		\ei
+	\end{instructionblock}
+\end{slide}
+
+\vfill
+
+This is very helpful when you have multiple people who monitor and look through the logs stored in your SOC-GUI. It can provide the needed knowledge to shut down and prevent incidents that are caught early.
+
+
+\pagebreak
+\begin{slide}{FleetDM}{\hyperref[slide 14]{\textless}\hyperref[slide 16]{\textgreater}}
+	\begin{instructionblock}
+		\bi
+			\item Fleet Device Manager is an online software that provides a easy to use device manager where you can look up and check the status of agents that use osquery agent software.
+			\item We are not able to implement this within our tutorial because you need internet connection to install multiple tools to allow this to run on your computer.
+            \item This is very helpful when using the osquery agent software to record and send logs back to security onion.
+		\ei
+		
+	\end{instructionblock}
+\end{slide}
+
+\vfill
+
+There are three different applications that are recommended to use on all agent devices, elasticsearch, wazuh, and osquery. In this implementation we were only able to use two for device endpoint monitoring.
+
+\pagebreak
+\begin{slide}{Navigator}{\hyperref[slide 15]{\textless}\hyperref[slide 17]{\textgreater}}
+	\begin{instructionblock}
+		\bi
+			\item This is an integrated and version of the MITRE ATT&CK Navigator tool that maps and analyzes threats methods as they appear.
+			
+			\item This is used hand in hand with the playbook but this provides a framework of what might happen in certain scenarios when a incident has been detected.
+			
+			\item In the playbook we can see references to the ATT&CK navigator tool about certain incidents and more knowledge on what to do in said incidents.
+		\ei
+
+	\end{instructionblock}
+\end{slide}
+
+\vfill 
+MITRE ATT&CK framework is a database that shows what an attacker would do in a certain scenario when they are attacking a system.
+
+
+
+
+\pagebreak
+\begin{slide}{Walkthrough Activity: More Functions}{\hyperref[slide 16]{\textless}\hyperref[slide 18]{\textgreater}}
+	\begin{instructionblock}
+		A lot of the services that Security Onion offers require internet, and/or are beyond the scope of this lab. The presenter will demonstrate some of these functions, and the audience is requested to follow along.
+	\end{instructionblock}
+\end{slide}
+\vfill
+Duration: 10-15 minutes
+
+
+\pagebreak
+\begin{slide}{Challenge 1: Capturing and logging ICMP packets}{\hyperref[slide 17]{\textless}\hyperref[slide 19]{\textgreater}}
+	\begin{instructionblock}
+		\begin{itemize}
+			\item Find a way to make more ICMP alerts show up on the "alerts" tab of the Security Onion SOCGUI (Security Onion Console GUI).
+            \item Then look in the Kibana interface to find the alert so it shows where ICMP traffic originated, where it went and the timestamp associated.
+		\end{itemize}
+	\end{instructionblock}
+\end{slide}
+
+\pagebreak
+
+\begin{slide}{Conclusion}{\hyperref[slide 19]{\textless}\hyperref[slide 21]{\textgreater}}
+	%\vskip 10pt
+	\begin{instructionblock}
+		\bi
+			\item Network monitoring is a cornerstone of modern Cybersecurity, enabling organizations to detect, analyze, and respond to threats in real time.
+            \item It provides deep insights into network traffic, helping identify anomalies, unauthorized activities, and potential breaches.
+			\item It combines network monitoring with endpoint security and log analysis enhances overall security posture and reduces attack surfaces.
+		\ei
+	\end{instructionblock}
+\end{slide}
+		Proactive and continuous network monitoring is no longer optional—it's a necessity for safeguarding data, maintaining operational integrity, and ensuring business continuity in today's interconnected world.
+\vfill
+	\cite{book}
+\pagebreak
+%-------------------------------------------------------------------------------------------
+%\begin{slide}{Challenge 5: Windows 7 Password Manager}{\hyperref[slide 20]{\textless}\hyperref[slide 22]{\textgreater}}
+	%\begin{instructionblock}
+		%In the Window 7 policy manager you can change the requirements needed for password %creation. Try to find and edit these policies to make sure that users create and change %secure passwords in your windows server.
+		%\bi
+			%\item Find where the password policies are stored and look at the minimum requrements %that windows require for passwords.
+			%\item Change and play with the policies so that you can keep your users secure and %that when a user creates a password it will not accept weak passwords.
+%		\ei
+%	\end{instructionblock}
+%\end{slide}
+%Hint: Look in Computer Configuration program and navigate to where password policies are stored to %find and change the policies.
+%\vfill
+%Duration: 10-15 minutes
+%
+%\pagebreak
+%\begin{slide}{Questions}{\hyperref[slide 21]{\textless}\hyperref[slide 23]{\textgreater}}
+%	\vskip 10pt
+%	\begin{instructionblock}
+%		\begin{enumerate}
+%			\item What is salting?
+%			\item Can you crack any possible password with a brute-force attack? If so, what would %this require?
+%			\item What encryption is used by Windows? Linux?
+%		\end{enumerate}
+%	\end{instructionblock}
+%\end{slide}
+%
+%\vfill	
+%
+%\pagebreak
+%\begin{slide}{Rainbow Tables}{\hyperref[slide 22]{\textless}\hyperref[slide 24]{\textgreater}}
+%\begin{instructionblock}
+%\begin{itemize}
+%\item Another way to crack passwords is to calculate all possible hashes for passwords of a %certain length and hash function and to store the passwords and their associated hashes in a table %for future lookup. 
+%\item This trades speed for storage capacity. To have rainbow tables for the most common hash %functions and for passwords of moderate length terabytes of storage is commonly required.
+%\item The downside to cracking with rainbow tables is that if a salt is added to a password it %reduces its effectiveness to the point where it gives no advantage.
+%\end{itemize}
+%\end{instructionblock}
+%\end{slide}
+%\cite{rainbowcrack}
+%\vfill
+%Specialized software is available for cracking passwords with rainbow tables. Rainbow tables and %the required software to use them can be downloaded from many places, but one place is Project %RainbowCrack \url{http://project-rainbowcrack.com/index.htm}.\cite{rainbowcrack} (Rainbow crack, %or RCrack, is also a program included in Kali that performs rainbow table attacks in a similar %fashion to JTR)
+%
+%\pagebreak
+%\begin{slide}{Pass-The-Hash\cite{passthehash}}{\hyperref[slide 24]{\textless}\hyperref[slide 26]%{\textgreater}}
+	%\begin{instructionblock}
+			%\bi
+				%\item Technique that allows attacker to authenticate access using LM and NTLM Hash %without needing cleartext password
+%				\item Any Windows machine that uses communications protocols are vulnerable
+%				\item Very difficult to defend against, requires defense in depth (see below)
+%			\ei
+%	\end{instructionblock}
+%\end{slide}
+%Mitigations include heavily using least privilege principle, firewalls, disk encryption, removal %of credential caching, active directory usage, limiting administrator logins to specific domains, %patching, and so on.
+%\pagebreak
+%\begin{slide}{Conclusion}{\hyperref[slide 25]{\textless}\hyperref[slide 27]{\textgreater}}
+%\begin{instructionblock}
+%\begin{itemize}
+%\item Passwords are fragile.  Passwords that are easy for people to remember are even easier for %computers to guess.
+%\item Even ``secure'' passwords can be vulnerable to more sophisticated attacks.
+%\item It seems likely that passwords will ultimately be replaced by a newer more secure mechanism, % that will combine better security with greater ease of use.
+%\end{itemize}
+%\end{instructionblock}
+%\end{slide}
+%\vfill
+%
+%\pagebreak
+%
+\begin{slide}{Appendix: Setting Up the VM, Solutions, and Change-log}{\hyperref[slide 26]{\textless}}
+	\begin{instructionblock}
+		\begin{enumerate}
+			\item {Steps for setting up the virtual machine}
+			%\item {Network Diagram}
+			\item {Solutions to the challenges and questions}
+				
+			\item {Change-log}
+		\end{enumerate}
+	\end{instructionblock}
+\end{slide}
+
+\textbf{Steps for Virtual Machine setup:}
+
+\ben
+\item This Tutorial requires following VM's
+\begin{itemize}
+    \item Security Onion VM
+	\item Windows 11 VM Connected to Security Onion VM
+	\item Ubuntu VM Connected to Security Onion VM
+    \item LAMP webserver
+    
+	
+\end{itemize}
+\een
+
+\pagebreak
+%\textbf{Network Diagram:}
+%\begin{figure}[ht]
+%	\centering
+%	\includegraphics{NetworkDiagram.png}
+%	\caption{Network Diagram}
+%	\label{Network Diagram}
+%\end{figure}
+%\pagebreak
+
+
+
+\textbf{Solutions:}
+
+
+
+\begin{itemize}
+	\item Activity 1: Discussion
+			\begin{itemize}
+
+            \item Possible Answers: Real-time intrusion detection, Saves Manpower, Saves time
+            \item Possible Answer: Agents can be added or removed, like modules, within the Security Onion Framework.
+            \item Possible Answers: Network Detections are printed to a log, and yes, it can be used effectively for real-time network monitoring.
+		\end{itemize} 
+	
+	\item Task 1: Catching Events Within the "Alerts" Tab
+		\begin{itemize}
+			\item Login into the Windows 11 Machine
+			\item Go to 192.168.1.100 (Security Onion)
+            \item Navigate to the Alerts tab on the left of the SOCGUI
+			\item Log out and Log back in
+            \item Navigate to the Alerts tab on the left of the SOCGUI
+            \item Inspect the new event via the "Drilldown" function
+			
+		\end{itemize}
+	\item Activity 2: Triggering an event from the Ubuntu Machine
+		\begin{itemize}
+			\item Boot Ubuntu Machine
+			\item Fail to Log onto the user "bobbob" three times
+            \item Switch back to the SOCGUI
+            \item Navigate to the Alerts tab on the left of the SOCGUI
+            \item Inspect the new event via the "Drilldown" function
+			
+		\end{itemize}
+	\item Walkthrough Activity
+		\begin{itemize}
+			\item Follow the On-Screen Demonstration, what could go wrong?
+		\end{itemize}
+	\item Challenge 1: Capturing and logging ICMP Packets
+		\begin{itemize}
+            \item Open Terminal on the Ubuntu VM
+			\item Ping the Security Onion VM (Generate some ICMP traffic)
+			\item Navigate to the Alerts tab on the left of the SOCGUI
+            \item Inspect the new ICMP event via the "Drilldown" function 
+		\end{itemize}
+\end{itemize}
+\pagebreak	
+\textbf{Changelog:}
+\label{changelog}
+\vspace{6mm}
+
+
+\begin{tabular}{ |p{1cm}|p{3cm}|p{3cm}|p{5cm}|  }
+\hline
+\multicolumn{4}{|c|}{Security Onion} \\
+\hline
+\texttt{Ver.} & \texttt{Date} & \texttt{Authors} & \texttt{Changes} \\
+\hline
+v1 & December 2nd 2024 & Jeffrey Zhang and Garrett Pearsall & Initial Commit.  \\
+\hline
+\end{tabular}
+
+% bibliography on last page
+\pagebreak
+% this style of bibliography shows urls
+\bibliographystyle{IEEEtran}
+
+\begin{thebibliography}{9}
+	
+\bibitem{yahoo}
+Security Onion LLC.
+\textit{Security Onion History Timeline as displayed on their website}
+\url{https://securityonionsolutions.com/#about}
+ 
+\item ATT&CK navigator. ATT&CK Navigator - Security Onion Documentation 2.4 documentation. (n.d.). https://docs.securityonion.net/en/2.4/attack-navigator.html 
+\item Configuration. Configuration - Security Onion Documentation 2.4 documentation. (n.d.). https://docs.securityonion.net/en/2.4/configuration.html 
+\item CyberChef. CyberChef - Security Onion Documentation 2.4 documentation. (n.d.). https://docs.securityonion.net/en/2.4/cyberchef.html 
+\item Focus, D. V.-C. (2023, August 25). Security onion - (part 2) tools. Medium. https://medium.com/@itdanny/security-onion-part-2-tools-1cd95e350811 
+\item Kibana. Kibana - Security Onion Documentation 2.4 documentation. (n.d.). https://docs.securityonion.net/en/2.4/kibana.html 
+\item A new fleet. Fleet. (n.d.). https://fleetdm.com/announcements/a-new-fleet 
+\item YouTube. (n.d.). Security Onion Essentials 2.3 - Detection Engineering. YouTube. https://www.youtube.com/watch?v=IS2SOlDedPc 
+
+\end{thebibliography}
+
+
+\end{document}
